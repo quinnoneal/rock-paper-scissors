@@ -61,13 +61,16 @@ function game() {
         let computerChoice = getComputerChoice();
         let results = playRound(playerChoice, computerChoice);
         console.log(results);
-
-
-        let playerWonVar = playerWon(results);
-        if(playerWonVar && playerWonVar != "Tie") {
-            playerWinCount++;
-        } else if(!playerWonVar) {
-            computerWinCount++;
+        // if user entered invalid choice, subtract a round to go again
+        if(results.includes("please choose rock paper or scissors.")) {
+            i--;
+        } else {
+            let playerWonVar = playerWon(results);
+            if(playerWonVar && playerWonVar != "Tie") {
+                playerWinCount++;
+            } else if(!playerWonVar) {
+                computerWinCount++;
+            }    
         }
     }
 
