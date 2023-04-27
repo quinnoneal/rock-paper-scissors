@@ -93,4 +93,16 @@ function playerWon(roundResults) {
     }
 }
 
-game();
+const rockButton = document.querySelector(".rock");
+const paperButton = document.querySelector(".paper");
+const scissorsButton = document.querySelector(".scissors");
+
+rockButton.addEventListener('click', () => {
+    console.log(playRound("rock", getComputerChoice()));
+});
+paperButton.addEventListener('click', () => {
+    console.log(playRound("paper", getComputerChoice()));
+});
+scissorsButton.addEventListener('click', () => {
+    console.log(playRound("scissors", getComputerChoice()));
+});
