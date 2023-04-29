@@ -67,7 +67,7 @@ function playerWon(roundResults) {
 }
 
 function checkRounds(rounds) {
-    if (rounds === 5) {
+    if (rounds === 4) {
         finalResults = `Final Score:
         Your score: ${playerScore}
         Computer Score: ${computerScore}
@@ -106,11 +106,13 @@ function game(playerChoice) {
     if (checkRounds(rounds)) {
         let roundResult = playRound(playerChoice, getComputerChoice());
         results.textContent = roundResult;
-        if(playerWon(roundResult)) {
+        if(playerWon(roundResult) && playerWon(roundResult) !== "Tie") {
             playerScore++;
         } else if (!playerWon(roundResult)) {
             computerScore++;
         }
+        results.textContent += `\nYou: ${playerScore}
+        CPU: ${computerScore}`
         rounds++;
         console.log(rounds);
     } else {
