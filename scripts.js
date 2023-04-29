@@ -26,19 +26,19 @@ function playRound(playerSelection, computerSelection) {
 
     switch(playerSelection) {
         case "rock":
-            if(computerSelection == "rock") results = "tie";
-            if(computerSelection == "paper") results = "You Lost!";
-            if(computerSelection == "scissors") results = "You Win!";
+            if(computerSelection == "rock") results = "Tie!";
+            if(computerSelection == "paper") results = "You Lost! Paper beats Rock!";
+            if(computerSelection == "scissors") results = "You Win! Rock beats Scissors!";
             break;
         case "paper":
-            if(computerSelection == "rock") results = "You Win!";
-            if(computerSelection == "paper") results = "tie";
-            if(computerSelection == "scissors") results = "You Lost!";
+            if(computerSelection == "rock") results = "You Win! Paper beats Rock!";
+            if(computerSelection == "paper") results = "Tie!";
+            if(computerSelection == "scissors") results = "You Lost! Scissors beats Paper!";
             break;
         case "scissors":
-            if(computerSelection == "rock") results = "You Lost!";
-            if(computerSelection == "paper") results = "You Win!";
-            if(computerSelection == "scissors") results = "tie";
+            if(computerSelection == "rock") results = "You Lost! Rock beats Scissors!";
+            if(computerSelection == "paper") results = "You Win! Scissors beats Paper!";
+            if(computerSelection == "scissors") results = "Tie!";
             break;
         default:
             results = "please choose rock paper or scissors.";
@@ -50,33 +50,6 @@ function playRound(playerSelection, computerSelection) {
 // create helper function to get player selection
 function getPlayerChoice() {
     return prompt("Rock, Paper, or Scissors?");
-}
-
-function game() {
-    let playerWinCount = 0;
-    let computerWinCount = 0;
-
-    for(let i = 0; i < 5; i++) {
-        let playerChoice = getPlayerChoice();
-        let computerChoice = getComputerChoice();
-        let results = playRound(playerChoice, computerChoice);
-        console.log(results);
-        // if user entered invalid choice, subtract a round to go again
-        if(results.includes("please choose rock paper or scissors.")) {
-            i--;
-        } else {
-            let playerWonVar = playerWon(results);
-            if(playerWonVar && playerWonVar != "Tie") {
-                playerWinCount++;
-            } else if(!playerWonVar) {
-                computerWinCount++;
-            }    
-        }
-    }
-
-    console.log(`Final Scores:
-    Players Points: ${playerWinCount}
-    Computers Points: ${computerWinCount}`);
 }
 
 // create helper function to determine who won to keep track of multi game score.
@@ -93,16 +66,54 @@ function playerWon(roundResults) {
     }
 }
 
+function checkRounds(rounds) {
+    if (rounds === 5) {
+        finalResults = `Final Score:
+        Your score: ${playerScore}
+        Computer Score: ${computerScore}
+        `
+        return false;
+    }
+    return true;
+}
+
 const rockButton = document.querySelector(".rock");
 const paperButton = document.querySelector(".paper");
 const scissorsButton = document.querySelector(".scissors");
+const div = document.querySelector(".result-div");
+const results = document.createElement("div");
+div.appendChild(results);
+
+let playerScore = 0;
+let computerScore = 0;
+let playerChoice;
+let rounds = 0;
+let finalResults;
 
 rockButton.addEventListener('click', () => {
-    console.log(playRound("rock", getComputerChoice()));
+    game("rock")
 });
+
 paperButton.addEventListener('click', () => {
-    console.log(playRound("paper", getComputerChoice()));
+    game("paper");
 });
+
 scissorsButton.addEventListener('click', () => {
-    console.log(playRound("scissors", getComputerChoice()));
+    game("scissors");
 });
+
+function game(playerChoice) {
+    if (checkRounds(rounds)) {
+        let roundResult = playRound(playerChoice, getComputerChoice());
+        results.textContent = roundResult;
+        if(playerWon(roundResult)) {
+            playerScore++;
+        } else if (!playerWon(roundResult)) {
+            computerScore++;
+        }
+        rounds++;
+        console.log(rounds);
+    } else {
+        results.textContent = finalResults;
+    }
+}
